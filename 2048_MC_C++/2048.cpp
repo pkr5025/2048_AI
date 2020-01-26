@@ -34,8 +34,6 @@ public:
                 cout<<"}\n";
 	        }
 	}
-
-
 private:
 	void shift(){
 		vector<vector<int> > current(4, vector<int>(4));
@@ -66,6 +64,24 @@ private:
 		shift();
 	}
 
+	void transpose(){
+		for (int i=0; i<4; i++){
+			for (int j=0; j<i; j++){
+				swap(board[i][j],board[j][i]);
+			}
+		}
+	}
+	void flip(){
+		for (int i=0; i<4; i++){
+			swap(board[i][0],board[i][3]);
+			swap(board[i][1],board[i][2]);
+		}
+	}
+//	void move(char direction){
+//		vector<vector<int> > temp = board;
+//		
+//	}
+
 		
 };
 
@@ -76,6 +92,10 @@ int main(){
 	cout<<example.get_score()<<endl;
 	cout<<example.get_lost()<<endl;
 	example.print_board();
-//	example.merge();
-//	example.print_board();
+	cout<<endl;
+	example.transpose();
+	example.print_board();
+	cout<<endl;
+	example.flip();
+	example.print_board();
 }

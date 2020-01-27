@@ -34,6 +34,7 @@ public:
                 cout<<"}\n";
 	        }
 	}
+
 private:
 	void shift(){
 		vector<vector<int> > current(4, vector<int>(4));
@@ -77,10 +78,29 @@ private:
 			swap(board[i][1],board[i][2]);
 		}
 	}
-//	void move(char direction){
-//		vector<vector<int> > temp = board;
-//		
-//	}
+public:
+		void move(char direction){
+		if (direction == 'u'){
+			transpose();
+			merge();
+			transpose();
+		}
+		else if (direction == 'd'){
+			transpose();
+			flip();
+			merge();
+			flip();
+			transpose();
+		}
+		else if (direction == 'r'){
+			flip();
+			merge();
+			flip();
+		}
+		else
+			merge();
+	}
+
 
 		
 };
@@ -91,11 +111,13 @@ int main(){
 	game example;
 	cout<<example.get_score()<<endl;
 	cout<<example.get_lost()<<endl;
+	cout<<endl;
 	example.print_board();
 	cout<<endl;
-	example.transpose();
+	example.move('r');
 	example.print_board();
 	cout<<endl;
-	example.flip();
+	example.move('d');
 	example.print_board();
+	cout<<endl;
 }

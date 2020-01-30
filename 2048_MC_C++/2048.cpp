@@ -79,7 +79,7 @@ private:
 		}
 	}
 public:
-		void move(char direction){
+	void move(char direction){
 		if (direction == 'u'){
 			transpose();
 			merge();
@@ -100,6 +100,26 @@ public:
 		else
 			merge();
 	}
+	void lost(){
+		lose = true;
+		for (int i=0; i<4; i++){
+			if (lose == false)
+				break;
+			for (int j=0; j<4; j++){
+				if (board[i][j] == 0)
+					lose = false;
+				if (i<2 and board[i][j] == board[i+1][j])
+					lose = false;
+				if (j<2 and board[i][j] == board[i][j+1])
+					lose = false;
+
+
+				if (lose == false)
+					break;
+			}
+		}
+	}
+	
 
 
 		
@@ -120,4 +140,7 @@ int main(){
 	example.move('d');
 	example.print_board();
 	cout<<endl;
+	example.lost();
+	cout<<example.get_lost()<<endl;
+
 }

@@ -1,3 +1,4 @@
+#include<utility>		//pair
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -119,7 +120,11 @@ public:
 			}
 		}
 	}
-	
+	void add_tile(){
+		int random_tile = rand()%100
+		if (random_tile >=90) random_tile = 4;
+		else random_tile = 2;		
+	}	
 
 
 		

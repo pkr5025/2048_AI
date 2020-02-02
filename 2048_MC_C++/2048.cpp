@@ -121,9 +121,17 @@ public:
 		}
 	}
 	void add_tile(){
-		int random_tile = rand()%100
+		int random_tile = rand()%100;
 		if (random_tile >=90) random_tile = 4;
-		else random_tile = 2;		
+		else random_tile = 2;
+		vector<pair<int, int> > possibilities;
+		for (int i =0; i<4; i++){
+			for (int j=0; j<4; j++){
+				if (board[i][j] == 0) possibilities.push_back({i,j});
+			}
+		}
+		int square = rand() % possibilities.size();
+		board[possibilities[square].first][possibilities[square].second] = random_tile;
 	}	
 
 
@@ -132,7 +140,8 @@ public:
 
 
 int main(){
-	srand(1);
+//	srand(1);
+	srand(time(NULL));
 	game example;
 	cout<<example.get_score()<<endl;
 	cout<<example.get_lost()<<endl;
@@ -147,5 +156,7 @@ int main(){
 	cout<<endl;
 	example.lost();
 	cout<<example.get_lost()<<endl;
+	example.add_tile();
+	example.print_board();
 
 }

@@ -132,7 +132,31 @@ public:
 		}
 		int square = rand() % possibilities.size();
 		board[possibilities[square].first][possibilities[square].second] = random_tile;
-	}	
+	}
+	
+	vector<char> legal_move(){
+		vector<vector<int> > temp_board = board;
+		int temp_score = score;
+		vector<char> moves;
+		move('l');
+		if (board != temp_board)
+			moves.push_back('l');
+		board = temp_board;
+		move('r');
+		if (board != temp_board)
+			moves.push_back('r');
+		board = temp_board;
+		move('u');
+		if (board != temp_board)
+			moves.push_back('u');
+		board = temp_board;
+		move('d');
+		if (board != temp_board)
+			moves.push_back('d');
+		board = temp_board;
+		score = temp_score;
+		return moves;
+	}
 
 
 		
@@ -159,4 +183,7 @@ int main(){
 	example.add_tile();
 	example.print_board();
 
+	for (auto i: example.legal_move()){
+		cout<<i<<endl;
+	}
 }

@@ -1,4 +1,5 @@
 #include<utility>		//pair
+#include<iomanip> 		//setw
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -30,7 +31,7 @@ public:
 		 for (auto i: board){
                 	cout<<"{";
                	 	for (auto j: i){
-                        	cout<<j<<" ";
+                        	cout<<setw(3)<<j<<" ";
                 	}
                 cout<<"}\n";
 	        }
@@ -109,9 +110,9 @@ public:
 			for (int j=0; j<4; j++){
 				if (board[i][j] == 0)
 					lose = false;
-				if (i<2 and board[i][j] == board[i+1][j])
+				if (i<3 and board[i][j] == board[i+1][j])
 					lose = false;
-				if (j<2 and board[i][j] == board[i][j+1])
+				if (j<3 and board[i][j] == board[i][j+1])
 					lose = false;
 
 
@@ -130,8 +131,10 @@ public:
 				if (board[i][j] == 0) possibilities.push_back({i,j});
 			}
 		}
-		int square = rand() % possibilities.size();
-		board[possibilities[square].first][possibilities[square].second] = random_tile;
+		if (!possibilities.empty()){
+			int square = rand() % possibilities.size();
+			board[possibilities[square].first][possibilities[square].second] = random_tile;
+		}
 	}
 	
 	vector<char> legal_move(){
@@ -157,7 +160,21 @@ public:
 		score = temp_score;
 		return moves;
 	}
-
+	void random_game(){
+		char moves[] = {'l','r','u','d'};
+		vector<vector<int> > temp_board;
+		int move_num;
+		while(!lose){
+			temp_board = board;
+			move_num = rand()%4;
+			move(moves[move_num]);
+			lost();
+			if (board != temp_board)
+				add_tile();
+			print_board();
+			cout<<endl;
+		}
+	}
 
 		
 };
@@ -186,4 +203,6 @@ int main(){
 	for (auto i: example.legal_move()){
 		cout<<i<<endl;
 	}
+	example.random_game();
+	example.print_board();
 }

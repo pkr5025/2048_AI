@@ -175,6 +175,14 @@ public:
 			cout<<endl;
 		}
 	}
+	pair<char, int> random_game_initial_score(char initial_move){
+		pair<char, int> initial_score;
+		move(initial_move);
+		random_game();
+		initial_score = {initial_move, score};
+		return initial_score;
+	}
+	
 
 		
 };
@@ -205,4 +213,11 @@ int main(){
 	}
 	example.random_game();
 	example.print_board();
+	
+
+	game example2;
+	pair<char, int> a;
+	a= example2.random_game_initial_score('l');
+	cout<<a.first<<" "<<a.second<<endl;
+	example2.print_board();
 }

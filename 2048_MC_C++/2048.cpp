@@ -1,5 +1,6 @@
 #include<utility>		//pair
 #include<iomanip> 		//setw
+#include<map>
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -186,7 +187,26 @@ public:
 
 		
 };
+char get_move(game g, int num_random){
+	vector<char> legal_moves = g.legal_move();
+	char move;
+	game tempgame;
+	pair<char, int> move_score;
+	map<char, vector<int>> move_score_list;
+	for (int i =0; i<num_random; i++){
+		tempgame = g;
+		move = legal_moves[i%legal_moves.size()];
+		move_score = tempgame.random_game_initial_score(move);
+		move_score_list[move_score.first].push_back(move_score.second);
 
+	}
+	return 'l';
+}
+
+/*int montecarlo(game g, int num_random){
+	
+}
+*/
 
 int main(){
 //	srand(1);

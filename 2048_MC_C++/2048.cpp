@@ -1,6 +1,7 @@
 #include<utility>		//pair
 #include<iomanip> 		//setw
 #include<map>
+#include <numeric> 		//accumulate 
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -172,8 +173,9 @@ public:
 			lost();
 			if (board != temp_board)
 				add_tile();
-			print_board();
-			cout<<endl;
+// uncomment to print board as the game plays
+//			print_board();
+//			cout<<endl;
 		}
 	}
 	pair<char, int> random_game_initial_score(char initial_move){
@@ -190,6 +192,7 @@ public:
 char get_move(game g, int num_random){
 	vector<char> legal_moves = g.legal_move();
 	char move;
+	int score, tempscore;
 	game tempgame;
 	pair<char, int> move_score;
 	map<char, vector<int>> move_score_list;
@@ -197,10 +200,21 @@ char get_move(game g, int num_random){
 		tempgame = g;
 		move = legal_moves[i%legal_moves.size()];
 		move_score = tempgame.random_game_initial_score(move);
+//		cout<<move_score.second<<endl;
 		move_score_list[move_score.first].push_back(move_score.second);
-
 	}
-	return 'l';
+	move = legal_moves[0];
+	score = accumulate(move_score_list[move].begin(), move_score_list[move].end(),0.0);
+//	cout<<score<<" "<<move<<endl;
+	for (int i = 1; i<legal_moves.size(); i++){
+		tempscore = accumulate(move_score_list[legal_moves[i]].begin(), move_score_list[legal_moves[i]].end(),0);
+//		cout<<tempscore<<" "<<legal_moves[i]<<endl;
+		if (tempscore > score){
+			score = tempscore;
+			move = legal_moves[i];
+		}
+	}
+	return move;
 }
 
 /*int montecarlo(game g, int num_random){
@@ -211,7 +225,7 @@ char get_move(game g, int num_random){
 int main(){
 //	srand(1);
 	srand(time(NULL));
-	game example;
+/*	game example;
 	cout<<example.get_score()<<endl;
 	cout<<example.get_lost()<<endl;
 	cout<<endl;
@@ -233,11 +247,16 @@ int main(){
 	}
 	example.random_game();
 	example.print_board();
-	
-
+*/	
+/*
 	game example2;
 	pair<char, int> a;
 	a= example2.random_game_initial_score('l');
 	cout<<a.first<<" "<<a.second<<endl;
 	example2.print_board();
+*/
+	game example3;
+	example3.print_board();
+	cout<<get_move(example3, 100)<<endl;
+
 }

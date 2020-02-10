@@ -192,7 +192,8 @@ public:
 char get_move(game g, int num_random){
 	vector<char> legal_moves = g.legal_move();
 	char move;
-	int score, tempscore;
+	long long int score;
+	long long int tempscore;
 	game tempgame;
 	pair<char, int> move_score;
 	map<char, vector<int>> move_score_list;
@@ -213,14 +214,27 @@ char get_move(game g, int num_random){
 			score = tempscore;
 			move = legal_moves[i];
 		}
+
 	}
+
 	return move;
 }
 
-/*int montecarlo(game g, int num_random){
-	
+int montecarlo(game g, int num_random){
+	char move;
+	while(!g.get_lost()){
+		move = get_move(g, num_random);
+		g.move(move);
+		g.lost();
+		g.add_tile();
+		g.print_board();
+		cout<<endl;
+		cout<<g.get_lost()<<endl;
+	}	
+
+	return g.get_score();
 }
-*/
+
 
 int main(){
 //	srand(1);
@@ -257,6 +271,5 @@ int main(){
 */
 	game example3;
 	example3.print_board();
-	cout<<get_move(example3, 100)<<endl;
-
+	cout<<montecarlo(example3, 12);
 }

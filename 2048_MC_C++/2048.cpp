@@ -124,8 +124,8 @@ public:
 		}
 	}
 	void add_tile(){
-		int random_tile = rand()%100;
-		if (random_tile >=90) random_tile = 4;
+		int random_tile = rand()%1000;
+		if (random_tile >=900) random_tile = 4;
 		else random_tile = 2;
 		vector<pair<int, int> > possibilities;
 		for (int i =0; i<4; i++){
@@ -182,8 +182,7 @@ public:
 		pair<char, int> initial_score;
 		move(initial_move);
 		random_game();
-		initial_score = {initial_move, score};
-		return initial_score;
+		return {initial_move,score};
 	}
 	
 
@@ -191,25 +190,27 @@ public:
 };
 char get_move(game g, int num_random){
 	vector<char> legal_moves = g.legal_move();
+	int num_moves = legal_moves.size();
+	int num_games = num_random/num_moves;
 	char move;
-	long long int score;
-	long long int tempscore;
+	long double score;
+	long  double tempscore;
 	game tempgame;
 	pair<char, int> move_score;
 	map<char, vector<int>> move_score_list;
 	for (int i =0; i<num_random; i++){
 		tempgame = g;
-		move = legal_moves[i%legal_moves.size()];
+		move = legal_moves[i%num_moves];
 		move_score = tempgame.random_game_initial_score(move);
-//		cout<<move_score.second<<endl;
+//		cout<<move_score.first<<" "<<move_score.second<<endl;
 		move_score_list[move_score.first].push_back(move_score.second);
 	}
 	move = legal_moves[0];
-	score = accumulate(move_score_list[move].begin(), move_score_list[move].end(),0.0);
-//	cout<<score<<" "<<move<<endl;
-	for (int i = 1; i<legal_moves.size(); i++){
-		tempscore = accumulate(move_score_list[legal_moves[i]].begin(), move_score_list[legal_moves[i]].end(),0);
-//		cout<<tempscore<<" "<<legal_moves[i]<<endl;
+	score = accumulate(move_score_list[move].begin(), move_score_list[move].end(),0.0)/num_games;
+	cout<<score<<" "<<move<<endl;
+	for (int i = 1; i<num_moves; i++){
+		tempscore = accumulate(move_score_list[legal_moves[i]].begin(), move_score_list[legal_moves[i]].end(),0.0)/num_games;
+		cout<<tempscore<<" "<<legal_moves[i]<<endl;
 		if (tempscore > score){
 			score = tempscore;
 			move = legal_moves[i];
@@ -224,21 +225,20 @@ int montecarlo(game g, int num_random){
 	char move;
 	while(!g.get_lost()){
 		move = get_move(g, num_random);
-		g.move(move);
-		g.lost();
-		g.add_tile();
 		g.print_board();
 		cout<<endl;
-		cout<<g.get_lost()<<endl;
+		g.move(move);
+		g.add_tile();
+		g.lost();
 	}	
-
+	g.print_board();
 	return g.get_score();
 }
 
 
 int main(){
-//	srand(1);
-	srand(time(NULL));
+	srand(1);
+//	srand(time(NULL));
 /*	game example;
 	cout<<example.get_score()<<endl;
 	cout<<example.get_lost()<<endl;
@@ -271,5 +271,5 @@ int main(){
 */
 	game example3;
 	example3.print_board();
-	cout<<montecarlo(example3, 12);
+	cout<<montecarlo(example3, 10*12);
 }
